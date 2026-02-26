@@ -1,5 +1,5 @@
 # SAMURAI 🗡️
-## Safeguarding against Malicious Usage and Resilience of AI
+## SAMURAI: Runtime Attack Detection in AI Accelerators Using AI Performance Counters (APC)
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.10-blue.svg"/>
