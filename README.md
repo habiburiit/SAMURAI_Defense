@@ -490,10 +490,11 @@ If you use SAMURAI in your research, please cite:
   year={2024},
   organization={IEEE}
 }
-```
+
 Paper Also got accepted in 
 IEEE Transactions on Circuits and Systems for Artificial Intelligence (Journal) 2026.
 Authors: Habibur Rahaman, Atri Chatterjee and Professor. Swarup Bhunia
+```
 ---
 
 ## 📄 License
