@@ -508,9 +508,9 @@ Copyright © University of Florida. All Rights Reserved.
 
 | Name | Role |
 |---|---|
-| **Habibur Rahaman** | Lead Developer, PhD Student | Email Id: rahaman.habibur@ufl.edu |
-| **Atri Chatterjee** | Co-Developer, PhD Student | Email Id: a.chatterjee@ufl.edu |
-| **Prof. Swarup Bhunia** | Advisor | Email Id: swarup@ece.ulf.edu |
+| **Habibur Rahaman** | Lead Developer, PhD Student, Email Id: rahaman.habibur@ufl.edu | 
+| **Atri Chatterjee** | Co-Developer, PhD Student, Email Id: a.chatterjee@ufl.edu |  
+| **Prof. Swarup Bhunia** | Advisor, Email Id: swarup@ece.ulf.edu|
 
 **Department:** Electrical and Computer Engineering  
 **University:** University of Florida
