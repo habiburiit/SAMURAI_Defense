@@ -1,0 +1,49 @@
+# SAMURAI Framework - Python Dependencies
+# Install with: pip install -r requirements.txt
+# NOTE: Install PyTorch and TensorFlow FIRST (see setup.sh)
+
+# ─── Core ML ────────────────────────────────────────────
+numpy==1.26.4
+torch==2.5.1
+torchvision==0.20.1
+torchaudio==2.5.1
+tensorflow==2.15.0
+
+# ─── Adversarial Attacks ────────────────────────────────
+foolbox==3.3.4
+
+# ─── Transformers / ViT ─────────────────────────────────
+transformers==4.40.0
+huggingface-hub
+
+# ─── Classical ML Detectors ─────────────────────────────
+scikit-learn==1.3.2
+xgboost
+joblib
+
+# ─── Deep Learning Utilities ────────────────────────────
+fvcore
+
+# ─── Explainability ─────────────────────────────────────
+shap
+
+# ─── Image Processing ───────────────────────────────────
+opencv-python==4.8.0.76
+scikit-image==0.21.0
+Pillow
+
+# ─── Numerical / Scientific ─────────────────────────────
+scipy
+pandas
+
+# ─── Visualization ──────────────────────────────────────
+matplotlib
+seaborn
+
+# ─── System Monitoring ──────────────────────────────────
+psutil
+nvidia-ml-py
+
+# ─── Utilities ──────────────────────────────────────────
+requests
+tqdm
