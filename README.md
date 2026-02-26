@@ -23,6 +23,12 @@
 > **Institution:** University of Florida, ECE Department  
 > **Advisor:** Professor Swarup Bhunia
 
+
+
+<p align="center">
+  <img src="SAMURAI_for_Defense.png" alt="SAMURAI Framework Diagram" width="950"/>
+</p>
+
 ---
 
 ## 📌 Overview
