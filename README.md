@@ -518,5 +518,5 @@ Copyright © University of Florida. All Rights Reserved.
 | **Atri Chatterjee** | Co-Developer, PhD Student, Email Id: a.chatterjee@ufl.edu |  
 | **Prof. Swarup Bhunia** | Advisor, Email Id: swarup@ece.ulf.edu|
 
-**Department:** Electrical and Computer Engineering  
+**Department:** Electrical and Computer Engineering (ECE) 
 **University:** University of Florida
