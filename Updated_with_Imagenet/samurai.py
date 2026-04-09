@@ -178,57 +178,89 @@ class DatasetManager:
             trainset = dataset_class(root='./data', train=True,  download=True, transform=transform)
             testset  = dataset_class(root='./data', train=False, download=True, transform=transform)
         return trainset, testset, num_classes
+
+
+
 class ModelManager:
     """Handle model creation and management"""
-    
+
     @staticmethod
-    def get_model(arch: str, num_classes: int):
+    def get_model(arch: str, num_classes: int, pretrained: bool = False):
+        from torchvision.models import (
+            ResNet18_Weights, ResNet34_Weights, ResNet50_Weights,
+            ResNet101_Weights, ResNet152_Weights,
+            VGG16_Weights, VGG19_Weights,
+            AlexNet_Weights, DenseNet121_Weights, DenseNet169_Weights,
+            Inception_V3_Weights, MobileNet_V2_Weights
+        )
+
+        pretrained_weights = {
+            'resnet18':    ResNet18_Weights.IMAGENET1K_V1,
+            'resnet34':    ResNet34_Weights.IMAGENET1K_V1,
+            'resnet50':    ResNet50_Weights.IMAGENET1K_V1,
+            'resnet101':   ResNet101_Weights.IMAGENET1K_V1,
+            'resnet152':   ResNet152_Weights.IMAGENET1K_V1,
+            'vgg16':       VGG16_Weights.IMAGENET1K_V1,
+            'vgg19':       VGG19_Weights.IMAGENET1K_V1,
+            'alexnet':     AlexNet_Weights.IMAGENET1K_V1,
+            'densenet121': DenseNet121_Weights.IMAGENET1K_V1,
+            'densenet169': DenseNet169_Weights.IMAGENET1K_V1,
+            'inception_v3': Inception_V3_Weights.IMAGENET1K_V1,
+            'mobilenet_v2': MobileNet_V2_Weights.IMAGENET1K_V1,
+        }
+
         model_map = {
-            'vgg16': models.vgg16,
-            'vgg19': models.vgg19,
-            'alexnet': models.alexnet,
-            'resnet18': models.resnet18,
-            'resnet34': models.resnet34,
-            'resnet50': models.resnet50,
-            'resnet101': models.resnet101,
-            'resnet152': models.resnet152,
+            'vgg16':       models.vgg16,
+            'vgg19':       models.vgg19,
+            'alexnet':     models.alexnet,
+            'resnet18':    models.resnet18,
+            'resnet34':    models.resnet34,
+            'resnet50':    models.resnet50,
+            'resnet101':   models.resnet101,
+            'resnet152':   models.resnet152,
             'densenet121': models.densenet121,
             'densenet169': models.densenet169,
             'inception_v3': models.inception_v3,
             'mobilenet_v2': models.mobilenet_v2,
             'VITA': {
-                "model":AutoModelForImageClassification.from_pretrained("google/vit-large-patch16-224-in21k"),
+                "model": AutoModelForImageClassification.from_pretrained("google/vit-large-patch16-224-in21k"),
                 "feature_extractor": AutoFeatureExtractor.from_pretrained("google/vit-large-patch16-224-in21k")
             },
             'VITB': {
-                "model":AutoModelForImageClassification.from_pretrained("google/vit-base-patch16-224"),
+                "model": AutoModelForImageClassification.from_pretrained("google/vit-base-patch16-224"),
                 "feature_extractor": AutoFeatureExtractor.from_pretrained("google/vit-base-patch16-224")
             }
         }
 
         if arch not in model_map:
             raise ValueError(f"Unsupported architecture: {arch}")
-        if('VIT' not in arch):
-            model = model_map[arch](pretrained=False)
+
+        if 'VIT' not in arch:
+            if pretrained and arch in pretrained_weights:
+                model = model_map[arch](weights=pretrained_weights[arch])
+                logger.info(f"Loaded pretrained ImageNet weights for {arch}")
+            else:
+                model = model_map[arch](weights=None)
         else:
             model = model_map[arch]['model']
 
-        
-        # Modify the final layer based on architecture
-        if 'resnet' in arch:
-            model.fc = nn.Linear(model.fc.in_features, num_classes)
-        elif 'vgg' in arch or 'alexnet' in arch:
-            model.classifier[-1] = nn.Linear(model.classifier[-1].in_features, num_classes)
-        elif 'densenet' in arch:
-            model.classifier = nn.Linear(model.classifier.in_features, num_classes)
-        elif 'inception' in arch:
-            model.fc = nn.Linear(model.fc.in_features, num_classes)
-        elif 'mobilenet' in arch:
-            model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
-        elif 'VIT' in arch:
-            model.classifier = nn.Linear(model.classifier.in_features, num_classes)
-        
+        # Only modify final layer if NOT ImageNet (1000 classes already correct)
+        if num_classes != 1000:
+            if 'resnet' in arch:
+                model.fc = nn.Linear(model.fc.in_features, num_classes)
+            elif 'vgg' in arch or 'alexnet' in arch:
+                model.classifier[-1] = nn.Linear(model.classifier[-1].in_features, num_classes)
+            elif 'densenet' in arch:
+                model.classifier = nn.Linear(model.classifier.in_features, num_classes)
+            elif 'inception' in arch:
+                model.fc = nn.Linear(model.fc.in_features, num_classes)
+            elif 'mobilenet' in arch:
+                model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
+            elif 'VIT' in arch:
+                model.classifier = nn.Linear(model.classifier.in_features, num_classes)
+
         return model
+
     @staticmethod
     def get_feature_extractor(arch: str):
         feature_map = {
@@ -236,18 +268,20 @@ class ModelManager:
             'VITB': AutoFeatureExtractor.from_pretrained("google/vit-base-patch16-224")
         }
         return feature_map[arch]
+
     @staticmethod
     def initialize_model(device, dataset_name: str, architecture: str):
         _, _, num_classes = DatasetManager.get_datasets(dataset_name)
-        model = ModelManager.get_model(architecture, num_classes).to(device)
-        
+        pretrained = (num_classes == 1000)
+        model = ModelManager.get_model(architecture, num_classes, pretrained=pretrained).to(device)
+
         model_path = f'./{dataset_name.lower()}_{architecture}.pth'
         if os.path.exists(model_path):
-            model.load_state_dict(torch.load(model_path, map_location=device))
+            model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
             logger.info(f"Loaded model from {model_path}")
         else:
             logger.warning(f"Model file {model_path} not found. Using randomly initialized model.")
-        
+
         model.eval()
         model.layer_outputs = []
         return model
@@ -832,4 +866,25 @@ class AdversarialAttacker:
         
         elif attack_type in ["jsma", "jsma_alt"]:
             if attack_type == "jsma":
-                try
+                try:
+                    return fb.attacks.SaliencyMapAttack(
+                        steps=kwargs.get('steps', 1000),
+                        max_perturbations_per_pixel=kwargs.get('max_pert', 256)
+                    )
+                except TypeError:
+                    return fb.attacks.SaliencyMapAttack()
+            else:
+                try:
+                    return fb.attacks.JSMA(steps=kwargs.get('steps', 1000))
+                except TypeError:
+                    return fb.attacks.JSMA()
+        
+        elif attack_type in ["lbfgs", "lbfgs_l2"]:
+            if attack_type == "lbfgs":
+                try:
+                    return fb.attacks.LBFGSAttack(
+                        steps=kwargs.get('steps', 100),
+                        lr=kwargs.get('lr', 1e-2)
+                    )
+                except TypeError:
+                    return fb.attacks.LBFGSA
