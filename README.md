@@ -510,7 +510,14 @@ If you use SAMURAI in your research, please cite:
   keywords={Feeds;AI accelerators;System-on-chip;Microprocessor chips;Circuits and systems;Filtering;Application specific integrated circuits;Filters;Circuits;Microprocessors;AI Accelerators;Neural Networks;Adversarial Attacks;AI Regulations;Audio signals;Mel-spectrogram;Hardware Performance Counter;Runtime Attack Detection;AI/ML Performance Counter},
   doi={10.1109/TCASAI.2026.3674059}}
 ```
-
+```bibtex
+@article{rahaman2025runtime,
+  title={Runtime Detection of Adversarial Attacks in AI Accelerators Using Performance Counters},
+  author={Rahaman, Habibur and Chatterjee, Atri and Bhunia, Swarup},
+  journal={arXiv preprint arXiv:2503.07568},
+  year={2025}
+}
+```
 
 ---
 
