@@ -502,7 +502,22 @@ Paper Also got accepted in will be online within few days:
 IEEE Transactions on Circuits and Systems for Artificial Intelligence (Journal) 2026.
 Authors: Habibur Rahaman, Atri Chatterjee and Professor. Swarup Bhunia
 Link for Early Access: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=11471824
+
 ```
+```bibtex
+@ARTICLE{11471824,
+  author={Rahaman, Habibur and Chatterjee, Atri and Bhunia, Swarup},
+  journal={IEEE Transactions on Circuits and Systems for Artificial Intelligence}, 
+  title={SAMURAI: Runtime Attack Detection in AI Accelerators Using AI Performance Counters}, 
+  year={2026},
+  volume={},
+  number={},
+  pages={1-16},
+  keywords={Feeds;AI accelerators;System-on-chip;Microprocessor chips;Circuits and systems;Filtering;Application specific integrated circuits;Filters;Circuits;Microprocessors;AI Accelerators;Neural Networks;Adversarial Attacks;AI Regulations;Audio signals;Mel-spectrogram;Hardware Performance Counter;Runtime Attack Detection;AI/ML Performance Counter},
+  doi={10.1109/TCASAI.2026.3674059}}
+```
+
+
 ---
 
 ## 📄 License
